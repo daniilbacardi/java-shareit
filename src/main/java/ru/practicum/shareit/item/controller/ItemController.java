@@ -34,7 +34,7 @@ public class ItemController {
     @GetMapping("/search")
     public List<ItemDto> findItemByParams(@RequestParam String text) {
         if (text.isBlank()) {
-            log.debug("ItemController: выполено findItemByParams - текст не обнаружен.");
+            log.debug("ItemController: выполнено findItemByParams - текст не обнаружен.");
             return new ArrayList<>();
         } else {
             log.debug("ItemController: выполнено findItemByParams - {}.", text);

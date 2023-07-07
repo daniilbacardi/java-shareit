@@ -22,33 +22,33 @@ public class UserController {
 
     @GetMapping
     public List<UserDto> findAllUsers() {
-        log.debug("UserController: выпонлено findAllUsers.");
+        log.debug("UserController: выполнено findAllUsers.");
         return UserMapper.toUserDtoList(userService.findAllUsers());
     }
 
     @GetMapping("/{userId}")
     public UserDto findUserById(@PathVariable Long userId) {
-        log.debug("UserController: выпонлено findUserById - {}.", userId);
+        log.debug("UserController: выполнено findUserById - {}.", userId);
         return UserMapper.toUserDto(userService.findUserById(userId));
     }
 
     @PostMapping
     public UserDto createNewUser(@Validated(Create.class) @RequestBody UserDto userDto) {
-        log.debug("UserController: выпонлено createUser - {}.", userDto);
+        log.debug("UserController: выполнено createUser - {}.", userDto);
         User user = UserMapper.toUser(userDto);
         return UserMapper.toUserDto(userService.createNewUser(user));
     }
 
     @PatchMapping("/{userId}")
     public UserDto updateUser(@PathVariable Long userId, @Validated(Update.class) @RequestBody UserDto userDto) {
-        log.debug("UserController: выпонлено updateUser - {}.", userDto);
+        log.debug("UserController: выполнено updateUser - {}.", userDto);
         User user = UserMapper.toUser(userDto);
         return UserMapper.toUserDto(userService.updateUser(userId, user));
     }
 
     @DeleteMapping("/{userId}")
     public void deleteUserById(@PathVariable Long userId) {
-        log.debug("UserController: выпонлено deleteUserById - {}.", userId);
+        log.debug("UserController: выполнено deleteUserById - {}.", userId);
         userService.deleteUserById(userId);
     }
 }

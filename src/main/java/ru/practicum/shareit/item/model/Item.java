@@ -1,38 +1,29 @@
 package ru.practicum.shareit.item.model;
 
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
-import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.user.model.User;
 
-import java.util.Objects;
+import javax.persistence.*;
 
-@Data
-@AllArgsConstructor
-@Builder
+@Getter
+@Setter
+@Entity
+@Table(name = "items", schema = "public")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Item {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "item_id")
     Long id;
+    @Column(name = "item_name", nullable = false)
     String name;
+    @Column(name = "description", length = 512, nullable = false)
     String description;
+    @Column(name = "available", nullable = false)
     Boolean available;
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
     User owner;
-    ItemRequest request;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Item item = (Item) o;
-        return id.equals(item.id) || name.equals(item.name) && description.equals(item.description);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, description);
-    }
 }

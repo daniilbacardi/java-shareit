@@ -31,8 +31,8 @@ import static ru.practicum.shareit.booking.model.Sorts.START;
 @Service
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
-    private static final Comparator<BookingDtoResponse> BOOKING_COMPARATOR = Comparator.comparing
-            (BookingDtoResponse::getStart);
+    private static final Comparator<BookingDtoResponse> BOOKING_COMPARATOR = Comparator.comparing(
+            BookingDtoResponse::getStart);
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;

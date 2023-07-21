@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.user.dto.UserDto;
 
 import java.time.LocalDateTime;
 
@@ -14,11 +15,11 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class BookingDtoResponse {
+public class BookingDto {
     long id;
     LocalDateTime start;
     LocalDateTime end;
     ItemDto item;
-    Long bookerId;
+    UserDto booker;
     BookingStatus status;
 }

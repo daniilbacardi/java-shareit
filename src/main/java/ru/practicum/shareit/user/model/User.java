@@ -4,18 +4,21 @@ import javax.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Getter
-@Setter
+@Data
+@Builder
 @Entity
-@Table(name = "users", schema = "public")
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "users")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
     @Id
+    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id", nullable = false)
-    Long id;
-    @Column(name = "user_name", nullable = false)
+    long id;
+    @Column(nullable = false, length = 512)
     String name;
-    @Column(name = "email", unique = true, length = 512, nullable = false)
+    @Column(nullable = false, unique = true, length = 255)
     String email;
 }
+

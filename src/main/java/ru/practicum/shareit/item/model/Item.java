@@ -7,23 +7,27 @@ import ru.practicum.shareit.user.model.User;
 
 import javax.persistence.*;
 
-@Getter
-@Setter
+@Data
+@Builder
 @Entity
-@Table(name = "items", schema = "public")
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "items")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Item {
     @Id
+    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "item_id")
-    Long id;
-    @Column(name = "item_name", nullable = false)
+    long id;
+    @Column(nullable = false, length = 512)
     String name;
-    @Column(name = "description", length = 512, nullable = false)
+    @Column(nullable = false, length = 1000)
     String description;
-    @Column(name = "available", nullable = false)
+    @Column(name = "is_available", nullable = false)
     Boolean available;
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "owner_id", nullable = false)
     User owner;
+    @Column(name = "request_id")
+    Long request;
 }

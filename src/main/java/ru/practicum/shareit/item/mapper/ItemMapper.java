@@ -1,33 +1,49 @@
 package ru.practicum.shareit.item.mapper;
 
+import lombok.NonNull;
 import org.mapstruct.Mapper;
-import ru.practicum.shareit.item.dto.ItemDtoRequest;
+import ru.practicum.shareit.booking.dto.BookingDtoResponse;
+import ru.practicum.shareit.item.dto.CommentDtoResponse;
+import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemDtoResponse;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.user.model.User;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Mapper
 public class ItemMapper {
-    public static Item toItem(ItemDtoRequest itemDtoRequest) {
-        Item item = new Item();
-        item.setId(itemDtoRequest.getId());
-        item.setName(itemDtoRequest.getName());
-        item.setDescription(itemDtoRequest.getDescription());
-        item.setAvailable(itemDtoRequest.getAvailable());
-        return item;
+    public static ItemDto toItemDto(Item item) {
+        return ItemDto.builder()
+                .id(item.getId())
+                .name(item.getName())
+                .description(item.getDescription())
+                .available(item.getAvailable())
+                .request(item.getRequest())
+                .build();
     }
 
-    public static ItemDtoResponse toItemDtoResponse(Item item) {
-        ItemDtoResponse itemDtoResponse = new ItemDtoResponse();
-        itemDtoResponse.setId(item.getId());
-        itemDtoResponse.setName(item.getName());
-        itemDtoResponse.setDescription(item.getDescription());
-        itemDtoResponse.setAvailable(item.getAvailable());
-        itemDtoResponse.setOwner(new ItemDtoResponse.ItemOwner(item.getOwner().getId(), item.getOwner().getName()));
-        itemDtoResponse.setLastBooking(null);
-        itemDtoResponse.setNextBooking(null);
-        itemDtoResponse.setComments(new ArrayList<>());
-        return itemDtoResponse;
+    public static Item toItem(@NonNull ItemDto itemDto, User user) {
+        return Item.builder()
+                .name(itemDto.getName())
+                .description(itemDto.getDescription())
+                .available(itemDto.getAvailable())
+                .request(itemDto.getRequest())
+                .owner(user)
+                .build();
+    }
+
+    public static ItemDtoResponse toItemDtoWithBooking(Item item, BookingDtoResponse next, BookingDtoResponse last,
+                                                       List<CommentDtoResponse> comments) {
+        return ItemDtoResponse.builder()
+                .id(item.getId())
+                .name(item.getName())
+                .description(item.getDescription())
+                .available(item.getAvailable())
+                .nextBooking(next)
+                .lastBooking(last)
+                .request(item.getRequest())
+                .comments(comments)
+                .build();
     }
 }

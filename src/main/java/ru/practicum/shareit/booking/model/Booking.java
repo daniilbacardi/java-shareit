@@ -8,29 +8,29 @@ import ru.practicum.shareit.user.model.User;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "bookings", schema = "public")
+@Table(name = "bookings")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Booking {
     @Id
+    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "booking_id")
-    Long id;
-    @Column(name = "start_date", nullable = false)
+    long id;
+    @Column(name = "start_date")
     LocalDateTime start;
-    @Column(name = "end_date", nullable = false)
+    @Column(name = "end_date")
     LocalDateTime end;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "item_id", nullable = false)
     Item item;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "booker_id", nullable = false)
     User booker;
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", length = 15, nullable = false)
-    Status status;
+    @Column(name = "status", nullable = false, length = 50)
+    BookingStatus status;
 }

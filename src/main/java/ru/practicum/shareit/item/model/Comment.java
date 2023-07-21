@@ -1,32 +1,31 @@
 package ru.practicum.shareit.item.model;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.shareit.user.model.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
+@Builder
 @Entity
-@Table(name = "comments", schema = "public")
+@Table(name = "comments")
+@NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Comment {
     @Id
+    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id")
-    Long id;
-    @Column(name = "comment_text", nullable = false)
+    long id;
+    @Column(name = "text", nullable = false, length = 2000)
     String text;
-    @ManyToOne
-    @JoinColumn(name = "item_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "item_id", nullable = false)
     Item item;
-    @ManyToOne
-    @JoinColumn(name = "author_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "author_id", nullable = false)
     User author;
-    @Column(name = "created")
     LocalDateTime created;
 }

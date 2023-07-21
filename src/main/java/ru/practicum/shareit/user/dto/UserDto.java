@@ -2,22 +2,23 @@ package ru.practicum.shareit.user.dto;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import ru.practicum.shareit.validator.Create;
-import ru.practicum.shareit.validator.Update;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PositiveOrZero;
 
-@Getter
-@Setter
-@ToString
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserDto {
-    Long id;
-    @NotBlank(groups = {Create.class})
-    @Email(groups = {Create.class, Update.class})
-    String email;
-    @NotBlank(groups = {Create.class})
+    @PositiveOrZero(message = "ID не может быть меньше ноля")
+    @EqualsAndHashCode.Include
+    long id;
+    @NotBlank(message = "Имя не должен быть пустым")
     String name;
+    @NotBlank(message = "Почта не должна быть пустой")
+    @Email(message = "Некорректная почта")
+    String email;
 }
 

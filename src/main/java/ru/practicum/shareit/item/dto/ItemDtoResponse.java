@@ -2,31 +2,22 @@ package ru.practicum.shareit.item.dto;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import ru.practicum.shareit.booking.dto.BookingDtoResponse;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
+@Builder
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ItemDtoResponse {
-    Long id;
+    @EqualsAndHashCode.Include
+    long id;
     String name;
     String description;
     Boolean available;
-    ItemOwner owner;
-    ItemBooking lastBooking;
-    ItemBooking nextBooking;
-    List<CommentDto> comments;
-
-    @Data
-    public static class ItemOwner {
-        final long id;
-        final String name;
-    }
-
-    @Data
-    public static class ItemBooking {
-        final long id;
-        final long bookerId;
-    }
+    BookingDtoResponse lastBooking;
+    BookingDtoResponse nextBooking;
+    Long request;
+    List<CommentDtoResponse> comments;
 }

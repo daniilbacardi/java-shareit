@@ -1,21 +1,45 @@
 package ru.practicum.shareit.booking.repository;
 
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.booking.model.Booking;
+import ru.practicum.shareit.booking.model.BookingStatus;
+import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.user.model.User;
 
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.Collection;
 
-public interface BookingRepository {
+@Repository
+public interface BookingRepository extends JpaRepository<Booking, Long> {
+    Collection<Booking> findAllByItemOwner(User booker, Sort sort);
 
-    List<Booking> findAllBookings();
+    Collection<Booking> findAllByItemOwnerAndStartBeforeAndEndAfter(User booker, LocalDateTime now,
+                                                                    LocalDateTime now1,
+                                                                    Sort sort);
 
-    Optional<Booking> findBookingById(Long bookingId);
+    Collection<Booking> findAllByItemOwnerAndEndBefore(User booker, LocalDateTime now, Sort sort);
 
-    Booking createNewBooking(Booking booking);
+    Collection<Booking> findAllByItemOwnerAndStartAfter(User booker, LocalDateTime now, Sort sort);
 
-    Booking updateBooking(Booking booking);
+    Collection<Booking> findAllByItemOwnerAndStatusEquals(User booker, BookingStatus waiting, Sort sort);
 
-    void deleteBookingById(Long bookingId);
+    Collection<Booking> findAllByBookerId(Long booker, Sort sort);
 
-    boolean shouldBookingExists(Long bookingId);
+    Collection<Booking> findAllByBookerIdAndEndBefore(Long booker, LocalDateTime now, Sort sort);
+
+    Collection<Booking> findAllByBookerIdAndStartBeforeAndEndAfter(Long booker, LocalDateTime now,
+                                                                   LocalDateTime now1,
+                                                                   Sort sort);
+
+    Collection<Booking> findAllByBookerIdAndStartAfter(Long booker, LocalDateTime now, Sort sort);
+
+    Collection<Booking> findAllByBookerIdAndStatusEquals(Long booker, BookingStatus waiting, Sort sort);
+
+    Collection<Booking> findAllByItemIdAndBookerIdAndStatusAndStartBefore(long itemId, long bookerId,
+                                                                          BookingStatus bookingStatus,
+                                                                          LocalDateTime now);
+
+    Collection<Booking> findAllByItem(Item item, Sort sort);
 }

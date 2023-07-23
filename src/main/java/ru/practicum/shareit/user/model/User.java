@@ -1,36 +1,23 @@
 package ru.practicum.shareit.user.model;
 
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import javax.persistence.*;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Objects;
-
 @Data
+@Builder
+@Entity
+@NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "users")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
-    Long id;
-    @NotBlank
-    @Email
-    String email;
+    @Id
+    @EqualsAndHashCode.Include
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    long id;
+    @Column(nullable = false, length = 512)
     String name;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id) || email.equals(user.email);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, email);
-    }
+    @Column(nullable = false, unique = true, length = 255)
+    String email;
 }

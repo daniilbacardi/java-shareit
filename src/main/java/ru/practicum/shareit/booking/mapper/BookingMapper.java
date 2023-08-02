@@ -16,10 +16,10 @@ import ru.practicum.shareit.user.model.User;
 @Mapper
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class BookingMapper {
-    public static Booking toBooking(BookingDtoRequest bookingDtoShort, User user, Item item) {
+    public static Booking toBooking(BookingDtoRequest bookingDtoRequest, User user, Item item) {
         return Booking.builder()
-                .start(bookingDtoShort.getStart())
-                .end(bookingDtoShort.getEnd())
+                .start(bookingDtoRequest.getStart())
+                .end(bookingDtoRequest.getEnd())
                 .item(item)
                 .status(BookingStatus.WAITING)
                 .booker(user)
@@ -37,7 +37,7 @@ public class BookingMapper {
                 .build();
     }
 
-    public static BookingDtoResponse toBookingDtoItem(Booking booking) {
+    public static BookingDtoResponse toBookingDtoResponse(Booking booking) {
         return BookingDtoResponse.builder()
                 .id(booking.getId())
                 .bookerId(booking.getBooker().getId())

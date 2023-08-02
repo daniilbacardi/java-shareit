@@ -19,6 +19,7 @@ public class Booking {
     @Id
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     long id;
     @Column(name = "start_date")
     LocalDateTime start;

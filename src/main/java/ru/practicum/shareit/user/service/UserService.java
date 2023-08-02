@@ -5,9 +5,9 @@ import ru.practicum.shareit.user.dto.UserDto;
 import java.util.Collection;
 
 public interface UserService {
-    Collection<UserDto> findAllUsers();
+    Collection<UserDto> getAllUsers();
 
-    UserDto findUserById(long userId);
+    UserDto getUserById(long userId);
 
     UserDto createNewUser(UserDto userDto);
 

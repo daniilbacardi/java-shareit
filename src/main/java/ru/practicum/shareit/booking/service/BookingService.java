@@ -8,13 +8,13 @@ import java.util.Collection;
 
 
 public interface BookingService {
-    BookingDto createBooking(BookingDtoRequest bookingDtoShort, Long userId);
+    BookingDto createNewBooking(BookingDtoRequest bookingDtoRequest, Long userId);
 
     BookingDto requestStatusDecision(Long userId, Long bookingId, Boolean approved);
 
     BookingDto getBookingByUser(Long userId, Long bookingId);
 
-    Collection<BookingDto> getAllBookingsByUser(Long userId, BookingStates state);
+    Collection<BookingDto> getAllBookingsByUser(Long userId, BookingStates state, Integer from, Integer size);
 
-    Collection<BookingDto> getAllBookingsByOwner(Long ownerId, BookingStates state);
+    Collection<BookingDto> getAllBookingsByOwner(Long ownerId, BookingStates state, Integer from, Integer size);
 }

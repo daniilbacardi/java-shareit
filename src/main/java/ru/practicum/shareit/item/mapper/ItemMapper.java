@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.mapstruct.Mapper;
+import org.springframework.util.CollectionUtils;
 import ru.practicum.shareit.booking.dto.BookingDtoResponse;
 import ru.practicum.shareit.item.dto.CommentDtoResponse;
 import ru.practicum.shareit.item.dto.ItemDto;
@@ -11,7 +12,9 @@ import ru.practicum.shareit.item.dto.ItemDtoResponse;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Mapper
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -22,7 +25,7 @@ public class ItemMapper {
                 .name(item.getName())
                 .description(item.getDescription())
                 .available(item.getAvailable())
-                .request(item.getRequest())
+                .requestId(item.getItemRequest() == null ? null : item.getItemRequest().getId())
                 .build();
     }
 
@@ -31,7 +34,6 @@ public class ItemMapper {
                 .name(itemDto.getName())
                 .description(itemDto.getDescription())
                 .available(itemDto.getAvailable())
-                .request(itemDto.getRequest())
                 .owner(user)
                 .build();
     }
@@ -45,8 +47,15 @@ public class ItemMapper {
                 .available(item.getAvailable())
                 .nextBooking(next)
                 .lastBooking(last)
-                .request(item.getRequest())
+                .requestId(item.getItemRequest() == null ? null : item.getItemRequest().getId())
                 .comments(comments)
                 .build();
+    }
+
+    public static List<ItemDto> toItemForRequestDto(List<Item> items) {
+        if (CollectionUtils.isEmpty(items)) {
+            return Collections.emptyList();
+        }
+        return items.stream().map(ItemMapper::toItemDto).collect(Collectors.toList());
     }
 }

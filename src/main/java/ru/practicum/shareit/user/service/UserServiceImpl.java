@@ -18,12 +18,12 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private final UserRepository userRep;
+    private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
     @Override
-    public Collection<UserDto> findAllUsers() {
-        return userRep.findAll()
+    public Collection<UserDto> getAllUsers() {
+        return userRepository.findAll()
                 .stream()
                 .map(UserMapper::toUserDto)
                 .collect(Collectors.toList());
@@ -31,8 +31,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     @Override
-    public UserDto findUserById(long userId) {
-        User user = userRep.findById(userId)
+    public UserDto getUserById(long userId) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователя с id = " + userId + " не существует"));
         return UserMapper.toUserDto(user);
     }
@@ -40,28 +40,28 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public UserDto createNewUser(UserDto userDto) {
-        User user = userRep.save(UserMapper.toUser(userDto));
+        User user = userRepository.save(UserMapper.toUser(userDto));
         return UserMapper.toUserDto(user);
     }
 
     @Transactional
     @Override
     public UserDto updateUser(UserDto userDto, long userId) {
-        User updateUser = userRep.findById(userId)
+        User updateUser = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователя с id = " + userId + " не существует"));
         Optional.ofNullable(userDto.getName()).ifPresent(updateUser::setName);
         Optional.ofNullable(userDto.getEmail()).ifPresent(updateUser::setEmail);
-        User emailUser = userRep.findUserByEmail(updateUser.getEmail());
+        User emailUser = userRepository.findUserByEmail(updateUser.getEmail());
         if (!Objects.equals(updateUser.getEmail(), emailUser.getEmail())) {
             throw new AlreadyExistsException("Пользователь с такой почтой уже существует");
         }
-        userRep.save(updateUser);
+        userRepository.save(updateUser);
         return UserMapper.toUserDto(updateUser);
     }
 
     @Transactional
     @Override
     public void deleteUserById(long userId) {
-        userRep.deleteById(userId);
+        userRepository.deleteById(userId);
     }
 }

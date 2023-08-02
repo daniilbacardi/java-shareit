@@ -1,10 +1,11 @@
-package ru.practicum.shareit.booking.model;
+package ru.practicum.shareit.enums;
 
 import lombok.Getter;
 
 @Getter
 public enum Sorts {
-    START("start");
+    START("start"),
+    CREATED("created");
 
     private final String sort;
 

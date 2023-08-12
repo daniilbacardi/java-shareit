@@ -2,39 +2,48 @@ package ru.practicum.shareit.item.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.CommentDtoResponse;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemDtoResponse;
-import ru.practicum.shareit.item.service.ItemServiceImpl;
+import ru.practicum.shareit.item.service.ItemService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
 import java.util.Collection;
 
+@Validated
 @RestController
 @RequestMapping("/items")
 @RequiredArgsConstructor
 @Slf4j
 public class ItemController {
-    private final ItemServiceImpl itemService;
+    private final ItemService itemService;
 
     @GetMapping
-    public Collection<ItemDtoResponse> findAllItems(@RequestHeader("X-Sharer-User-Id") long userId) {
-        log.info("ItemController: findAllItems выполнено. User ID {}.", userId);
-        return itemService.findAllItems(userId);
+    public Collection<ItemDtoResponse> getAllItemsOfUser(@RequestHeader("X-Sharer-User-Id") long userId,
+                                                         @RequestParam(defaultValue = "0") @Min(0) int from,
+                                                         @RequestParam(defaultValue = "20") @Positive int size) {
+        log.info("ItemController: getAllItemsOfUser выполнено. User ID {}, From {}, Size {}", userId, from, size);
+        return itemService.getAllItemsOfUser(userId, from, size);
     }
 
     @GetMapping("/{itemId}")
-    public ItemDtoResponse findItemById(@RequestHeader("X-Sharer-User-Id") long userId, @PathVariable long itemId) {
+    public ItemDtoResponse getItemById(@RequestHeader("X-Sharer-User-Id") long userId,
+                                       @PathVariable long itemId) {
         log.info("ItemController: findItemById выполнено. User ID {}, item ID {}.", userId, itemId);
-        return itemService.findItemById(userId, itemId);
+        return itemService.getItemById(userId, itemId);
     }
 
     @GetMapping("/search")
-    public Collection<ItemDto> findItemByParams(@RequestParam String text) {
-        log.info("ItemController: findItemByParams выполнено. Text: {}.", text);
-        return itemService.findItemsByText(text);
+    public Collection<ItemDto> searchAnItem(@RequestParam String text,
+                                            @RequestParam(defaultValue = "0") @Min(0) int from,
+                                            @RequestParam(defaultValue = "20") @Positive int size) {
+        log.info("ItemController: searchAnItem выполнено. Text: {}.", text);
+        return itemService.searchAnItem(text, from, size);
     }
 
     @PostMapping
@@ -57,6 +66,6 @@ public class ItemController {
                                             @PathVariable long itemId,
                                             @Valid @RequestBody CommentDto commentDto) {
         log.info("ItemController: createComment выполнено. User ID {}, itemId {}.", userId, itemId);
-        return itemService.createNewComment(commentDto, userId, itemId);
+        return itemService.createComment(commentDto, userId, itemId);
     }
 }

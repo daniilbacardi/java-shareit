@@ -16,12 +16,12 @@ public class ItemDto {
     @PositiveOrZero
     @EqualsAndHashCode.Include
     long id;
-    @NotBlank(message = "Отсутствует название вещи")
+    @NotBlank(message = "Отсутствует название предмета")
     String name;
-    @NotBlank(message = "Отсутствует описание вещи")
+    @NotBlank(message = "Отсутствует описание предмета")
     String description;
     @NotNull
     @AssertTrue
     Boolean available;
-    Long request;
+    Long requestId;
 }

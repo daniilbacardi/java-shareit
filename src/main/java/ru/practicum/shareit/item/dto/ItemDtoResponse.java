@@ -18,6 +18,6 @@ public class ItemDtoResponse {
     Boolean available;
     BookingDtoResponse lastBooking;
     BookingDtoResponse nextBooking;
-    Long request;
+    Long requestId;
     List<CommentDtoResponse> comments;
 }

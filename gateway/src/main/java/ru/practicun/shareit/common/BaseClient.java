@@ -87,7 +87,7 @@ public class BaseClient {
 
         ResponseEntity<Object> shareitServerResponse;
         try {
-            shareitServerResponse = (parameters !=null && !parameters.isEmpty()) ?
+            shareitServerResponse = (parameters != null && !parameters.isEmpty()) ?
                     rest.exchange(path, method, requestEntity, Object.class, parameters) :
                     rest.exchange(path, method, requestEntity, Object.class);
         } catch (HttpStatusCodeException e) {

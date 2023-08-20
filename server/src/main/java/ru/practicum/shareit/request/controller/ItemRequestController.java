@@ -10,6 +10,8 @@ import ru.practicum.shareit.request.service.RequestService;
 
 import java.util.Collection;
 
+import static ru.practicum.shareit.common.Constants.USER_ID_HEADER;
+
 @Validated
 @RestController
 @RequestMapping(path = "/requests")
@@ -19,20 +21,20 @@ public class ItemRequestController {
     private final RequestService requestService;
 
     @PostMapping
-    public ItemRequestDto createNewRequest(@RequestHeader("X-Sharer-User-Id") long userId,
+    public ItemRequestDto createNewRequest(@RequestHeader(USER_ID_HEADER) long userId,
                                            @RequestBody ShortRequestDto shortRequestDto) {
         log.info("ItemRequestController: createNewRequest выполнено. User ID {}.", userId);
         return requestService.createNewRequest(userId, shortRequestDto);
     }
 
     @GetMapping
-    public Collection<ItemRequestDto> getListOfUserRequests(@RequestHeader("X-Sharer-User-Id") long userId) {
+    public Collection<ItemRequestDto> getListOfUserRequests(@RequestHeader(USER_ID_HEADER) long userId) {
         log.info("ItemRequestController: getListOfUserRequests выполнено. User ID {}.", userId);
         return requestService.getListOfUserRequests(userId);
     }
 
     @GetMapping("/all")
-    public Collection<ItemRequestDto> getListOfRequests(@RequestHeader("X-Sharer-User-Id") long userId,
+    public Collection<ItemRequestDto> getListOfRequests(@RequestHeader(USER_ID_HEADER) long userId,
                                                         @RequestParam(defaultValue = "0") int from,
                                                         @RequestParam(defaultValue = "20") int size) {
         log.info("ItemRequestController: getListOfRequests выполнено. User ID {}, From {}, Size {}",
@@ -41,7 +43,7 @@ public class ItemRequestController {
     }
 
     @GetMapping("/{requestId}")
-    public ItemRequestDto getRequest(@RequestHeader("X-Sharer-User-Id") long userId,
+    public ItemRequestDto getRequest(@RequestHeader(USER_ID_HEADER) long userId,
                                      @PathVariable long requestId) {
         log.info("ItemRequestController: getRequest выполнено. User ID {}, request Id {}.", userId, requestId);
         return requestService.getRequest(userId, requestId);

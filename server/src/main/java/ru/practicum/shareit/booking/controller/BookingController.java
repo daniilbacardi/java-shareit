@@ -11,6 +11,8 @@ import ru.practicum.shareit.booking.service.BookingService;
 
 import java.util.Collection;
 
+import static ru.practicum.shareit.common.Constants.USER_ID_HEADER;
+
 @Validated
 @RestController
 @RequestMapping(path = "/bookings")
@@ -20,7 +22,7 @@ public class BookingController {
     private final BookingService bookingService;
 
     @PostMapping
-    public BookingDto createNewBooking(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public BookingDto createNewBooking(@RequestHeader(USER_ID_HEADER) Long userId,
                                        @RequestBody BookingDtoRequest bookingDtoRequest) {
         log.info("BookingController: createNewBooking выполнено. User ID {}.", userId);
         return bookingService.createNewBooking(bookingDtoRequest, userId);

@@ -12,6 +12,8 @@ import ru.practicum.shareit.item.service.ItemService;
 
 import java.util.Collection;
 
+import static ru.practicum.shareit.common.Constants.USER_ID_HEADER;
+
 @Validated
 @RestController
 @RequestMapping("/items")
@@ -21,7 +23,7 @@ public class ItemController {
     private final ItemService itemService;
 
     @GetMapping
-    public Collection<ItemDtoResponse> getAllItemsOfUser(@RequestHeader("X-Sharer-User-Id") long userId,
+    public Collection<ItemDtoResponse> getAllItemsOfUser(@RequestHeader(USER_ID_HEADER) long userId,
                                                          @RequestParam(defaultValue = "0") int from,
                                                          @RequestParam(defaultValue = "20") int size) {
         log.info("ItemController: getAllItemsOfUser выполнено. User ID {}, From {}, Size {}", userId, from, size);
@@ -29,7 +31,7 @@ public class ItemController {
     }
 
     @GetMapping("/{itemId}")
-    public ItemDtoResponse findItemById(@RequestHeader("X-Sharer-User-Id") long userId,
+    public ItemDtoResponse findItemById(@RequestHeader(USER_ID_HEADER) long userId,
                                         @PathVariable long itemId) {
         log.info("ItemController: findItemById выполнено. User ID {}, item ID {}.", userId, itemId);
         return itemService.getItemById(userId, itemId);
@@ -44,14 +46,14 @@ public class ItemController {
     }
 
     @PostMapping
-    public ItemDto createNewItem(@RequestHeader("X-Sharer-User-Id") long userId,
+    public ItemDto createNewItem(@RequestHeader(USER_ID_HEADER) long userId,
                                  @RequestBody ItemDto itemDto) {
         log.info("ItemController: createNewItem выполнено. User ID {}.", userId);
         return itemService.createNewItem(itemDto, userId);
     }
 
     @PatchMapping("/{itemId}")
-    public ItemDto updateItem(@RequestHeader("X-Sharer-User-Id") long userId,
+    public ItemDto updateItem(@RequestHeader(USER_ID_HEADER) long userId,
                               @PathVariable long itemId,
                               @RequestBody ItemDto itemDto) {
         log.info("ItemController: updateItem выполнено. User ID {}, itemId {}.", userId, itemId);
@@ -59,7 +61,7 @@ public class ItemController {
     }
 
     @PostMapping("/{itemId}/comment")
-    public CommentDtoResponse createComment(@RequestHeader("X-Sharer-User-Id") long userId,
+    public CommentDtoResponse createComment(@RequestHeader(USER_ID_HEADER) long userId,
                                             @PathVariable long itemId,
                                             @RequestBody CommentDto commentDto) {
         log.info("ItemController: createComment выполнено. User ID {}, itemId {}.", userId, itemId);

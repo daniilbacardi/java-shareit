@@ -13,6 +13,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 
+import static ru.practicun.shareit.common.Constants.USER_ID_HEADER;
+
 @Validated
 @Controller
 @RequestMapping(path = "/requests")
@@ -22,20 +24,20 @@ public class ItemRequestController {
     private final ItemRequestClient itemRequestClient;
 
     @PostMapping
-    public ResponseEntity<Object> createNewRequest(@RequestHeader("X-Sharer-User-Id") long userId,
+    public ResponseEntity<Object> createNewRequest(@RequestHeader(USER_ID_HEADER) long userId,
                                                    @Valid @RequestBody ShortRequestDto shortRequestDto) {
         log.info("ItemRequestController: createNewRequest выполнено. User ID {}.", userId);
         return itemRequestClient.createRequest(userId, shortRequestDto);
     }
 
     @GetMapping
-    public ResponseEntity<Object> getListOfUserRequests(@RequestHeader("X-Sharer-User-Id") long userId) {
+    public ResponseEntity<Object> getListOfUserRequests(@RequestHeader(USER_ID_HEADER) long userId) {
         log.info("ItemRequestController: getListOfUserRequests выполнено. User ID {}.", userId);
         return itemRequestClient.getListOfUserRequests(userId);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Object> getListOfRequests(@RequestHeader("X-Sharer-User-Id") long userId,
+    public ResponseEntity<Object> getListOfRequests(@RequestHeader(USER_ID_HEADER) long userId,
                                                     @RequestParam(defaultValue = "0") @Min(0) int from,
                                                     @RequestParam(defaultValue = "20") @Positive int size) {
         log.info("ItemRequestController: getListOfRequests выполнено. User ID {}, From {}, Size {}",
@@ -44,7 +46,7 @@ public class ItemRequestController {
     }
 
     @GetMapping("/{requestId}")
-    public ResponseEntity<Object> getRequest(@RequestHeader("X-Sharer-User-Id") long userId,
+    public ResponseEntity<Object> getRequest(@RequestHeader(USER_ID_HEADER) long userId,
                                              @PathVariable long requestId) {
         log.info("ItemRequestController: getRequest выполнено. User ID {}, request Id {}.", userId, requestId);
         return itemRequestClient.getRequest(userId, requestId);
